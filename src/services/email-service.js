@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const { MAILER } = require('../config');
+const Mailer  = require('../config/email-config');
 const { TicketRepository } = require('../repositories');
 const AppError = require('../utils/errors/app-errors');
 
@@ -7,7 +7,7 @@ const ticketRepository = new TicketRepository();
 
 async function sendMail(data) {
     try {
-        const response = await MAILER.sendMail({
+        const response = await Mailer.sendMail({
             from: data.mailFrom,
             to: data.mailTo,
             subject: data.subject,
@@ -16,6 +16,8 @@ async function sendMail(data) {
 
         return response;
     } catch (error) {
+        console.log('Inside email services');
+        console.log(error);
         throw new AppError('Cannot send mail', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
